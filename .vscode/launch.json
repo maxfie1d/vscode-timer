@@ -14,8 +14,7 @@
             "sourceMaps": true,
             "outFiles": [
                 "${workspaceRoot}/out/src/**/*.js"
-            ],
-            "preLaunchTask": "npm"
+            ]
         },
         {
             "name": "Launch Tests",

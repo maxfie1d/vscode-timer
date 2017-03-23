@@ -10,7 +10,7 @@
             "spaces"
         ],
         "linebreak-style": [
-            true,
+            false,
             "CRLF"
         ],
         "one-line": [

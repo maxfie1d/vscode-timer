@@ -3,35 +3,31 @@
 import * as vscode from "vscode";
 import { Timer, TimerState } from "./models/timer";
 import * as moment from "moment";
+import { Commands } from "./constants";
 require("moment-duration-format");
 
 export function activate(context: vscode.ExtensionContext) {
+    // ステータスバーアイテムを作る
     const statusBarItem = vscode.window.createStatusBarItem(
         vscode.StatusBarAlignment.Left);
-
     statusBarItem.tooltip = "Timer";
-    const timerActionCommand = "extension.vscode-timer.timerAction";
-    statusBarItem.command = timerActionCommand;
-
+    statusBarItem.command = Commands.TimerAction;
     statusBarItem.show();
 
+    // タイマーのモデルを作成する
     const timer = new Timer();
-    const seconds = 60 * 60;
-    statusBarItem.text = formatSeconds(seconds);
-    timer.setTimer(seconds);
     timer.onTimeChanged((args) => {
+        // 残り時間が変わるたびにUIに反映する
         statusBarItem.text = formatSeconds(args.remainingSeconds);
     });
-
     timer.onTimerEnd(() => {
-        statusBarItem.text = formatSeconds(seconds);
+        // タイマー終了のメッセージをvscodeに出す
         vscode.window.showInformationMessage("Timer end");
     });
 
-
     context.subscriptions.push(statusBarItem);
 
-    const command = vscode.commands.registerCommand(timerActionCommand, () => {
+    const command = vscode.commands.registerCommand(Commands.TimerAction, () => {
         switch (timer.state) {
             case TimerState.Running:
                 timer.pause();
@@ -45,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    const command2 = vscode.commands.registerCommand("extension.vscode-timer.reset", () => {
+    const command2 = vscode.commands.registerCommand(Commands.Reset, () => {
         timer.reset();
     });
 
