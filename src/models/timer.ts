@@ -97,7 +97,10 @@ export class Timer {
     }
 
     setTimer(seconds: number) {
+        if (seconds <= 0) throw new Error();
+
         this._timerSeconds = seconds;
+        this.fireTimeChangedEvent(this.remainingSeconds);
     }
 }
 

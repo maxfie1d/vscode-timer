@@ -20,6 +20,11 @@
         "command": "extension.vscode-timer.reset",
         "title": "Reset timer",
         "category": "vscode-timer"
+      },
+      {
+        "command": "extension.vscode-timer.setTimer",
+        "title": "Set timer",
+        "category": "vscode-timer"
       }
     ]
   },
