@@ -6,8 +6,8 @@ import * as moment from "moment";
 export class Timer {
     private _timeChangedEventEmitter = new vscode.EventEmitter<TimeChangedEventArgs>();
     private _timerEndEventEmitter = new vscode.EventEmitter<void>();
-    // private _timerStarted: Date;
-    // private _timerEnd: Date;
+    private _timerChangedEventEmitter = new vscode.EventEmitter<TimerChangedEventArgs>();
+
     private _elapsedSeconds: number;
     private _timerSeconds: number;
     private _interval: NodeJS.Timer | undefined;
@@ -16,8 +16,8 @@ export class Timer {
     // デフォルトのタイマー時間
     private static _DEFAULT_TIMER_SECONDS = 60 * 60;
 
-    constructor() {
-        this._timerSeconds = Timer._DEFAULT_TIMER_SECONDS;
+    constructor(timerSeconds = Timer._DEFAULT_TIMER_SECONDS) {
+        this._timerSeconds = timerSeconds;
 
         // イベントハンドラの登録を待つために
         // 少し時間をあけてリセットをかける
@@ -32,6 +32,10 @@ export class Timer {
 
     get onTimerEnd(): vscode.Event<void> {
         return this._timerEndEventEmitter.event;
+    }
+
+    get onTimerChanged(): vscode.Event<TimerChangedEventArgs> {
+        return this._timerChangedEventEmitter.event;
     }
 
     get state(): TimerState {
@@ -101,6 +105,9 @@ export class Timer {
 
         this._timerSeconds = seconds;
         this.fireTimeChangedEvent(this.remainingSeconds);
+        this._timerChangedEventEmitter.fire({
+            timerSeconds: seconds
+        });
     }
 }
 
@@ -132,4 +139,8 @@ export enum TimerState {
 
 export interface TimeChangedEventArgs {
     remainingSeconds: number;
+}
+
+export interface TimerChangedEventArgs {
+    timerSeconds: number;
 }

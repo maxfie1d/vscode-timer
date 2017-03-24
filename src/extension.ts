@@ -14,8 +14,24 @@ export function activate(context: vscode.ExtensionContext) {
     statusBarItem.command = Commands.TimerAction;
     statusBarItem.show();
 
+    // タイマーの時間を読み込む
+    function getConfigTimerSeconds(): number | undefined {
+        const t = context.globalState.get<number>("vscode-timer.timer");
+        if (t === undefined) {
+            return undefined;
+        } else {
+            const seconds = moment.duration(t, "seconds").asSeconds();
+            if (t <= 0) {
+                return undefined;
+            } else {
+                return seconds;
+            }
+        }
+    }
+
+    const seconds = getConfigTimerSeconds();
     // タイマーのモデルを作成する
-    const timer = new Timer();
+    const timer = new Timer(seconds);
     timer.onTimeChanged((args) => {
         // 残り時間が変わるたびにUIに反映する
         statusBarItem.text = formatSeconds(args.remainingSeconds);
@@ -23,6 +39,10 @@ export function activate(context: vscode.ExtensionContext) {
     timer.onTimerEnd(() => {
         // タイマー終了のメッセージをvscodeに出す
         vscode.window.showInformationMessage("Timer end");
+    });
+    timer.onTimerChanged(({ timerSeconds }) => {
+        // タイマー時間の変更を保存する
+        context.globalState.update("vscode-timer.timer", timerSeconds);
     });
 
     context.subscriptions.push(statusBarItem);
