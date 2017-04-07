@@ -14,7 +14,7 @@ export class Timer {
     private _state: TimerState;
 
     // デフォルトのタイマー時間
-    private static _DEFAULT_TIMER_SECONDS = 60 * 60;
+    private static _DEFAULT_TIMER_SECONDS = 15 * 60;
 
     constructor(timerSeconds = Timer._DEFAULT_TIMER_SECONDS) {
         this._timerSeconds = timerSeconds;
