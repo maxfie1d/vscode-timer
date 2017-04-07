@@ -1,9 +1,23 @@
 {
   "name": "vscode-timer",
   "displayName": "vscode-timer",
-  "description": "",
-  "version": "0.0.1",
+  "description": "A timer for VSCode",
+  "version": "1.0.0",
   "publisher": "MaxfieldWalker",
+  "galleryBanner": {
+    "color": "#000",
+    "theme": "dark"
+  },
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MaxfieldWalker/vscode-timer"
+  },
+  "bugs": {
+    "url": "https://github.com/MaxfieldWalker/vscode-timer/issues"
+  },
+  "homepage": "",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.5.0"
   },
